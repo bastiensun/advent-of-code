@@ -26,6 +26,7 @@
     "noUnusedParameters": true,
     "strict": true,
     "paths": {
+      "@advent-of-code/utils": ["libs/utils/src/index.ts"],
       "@advent-of-code/year2021": ["libs/year2021/src/index.ts"],
       "@advent-of-code/year2022": ["libs/year2022/src/index.ts"]
     }
