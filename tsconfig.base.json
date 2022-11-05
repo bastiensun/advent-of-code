@@ -25,7 +25,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "paths": {}
+    "paths": {
+      "@advent-of-code/year2021": ["libs/year2021/src/index.ts"],
+      "@advent-of-code/year2022": ["libs/year2022/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
