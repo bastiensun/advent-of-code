@@ -1,4 +1,5 @@
-export function year2022Day01Part2Fp(input: string): string {
+// O(n) (n === input.length)
+export function year2022Day01Part2Fp(input: string): number {
   const foodCaloriesFromElves = input
     .split("\n\n")
     .map((foodCaloriesFromOneElf) =>
@@ -15,9 +16,7 @@ export function year2022Day01Part2Fp(input: string): string {
     .slice()
     .sort((a, b) => b - a);
 
-  return (
-    (sortedSummedFoodCaloriesFromElves.at(0) ?? 0) +
-    (sortedSummedFoodCaloriesFromElves.at(1) ?? 0) +
-    (sortedSummedFoodCaloriesFromElves.at(2) ?? 0)
-  ).toString();
+  return sortedSummedFoodCaloriesFromElves
+    .slice(0, 3)
+    .reduce((sum, current) => sum + current, 0);
 }

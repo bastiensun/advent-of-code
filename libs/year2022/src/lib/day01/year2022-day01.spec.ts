@@ -25,11 +25,11 @@ const exampleInput = `1000
 const part1Cases = [
   {
     input: exampleInput,
-    output: "24000",
+    output: 24_000,
   },
   {
     input: getInput(path.join(__dirname, "input.txt")),
-    output: "75622",
+    output: 75_622,
   },
 ];
 
@@ -49,11 +49,11 @@ describe.each(part1Cases)(
 const part2Cases = [
   {
     input: exampleInput,
-    output: "45000",
+    output: 45_000,
   },
   {
     input: getInput(path.join(__dirname, "input.txt")),
-    output: "213159",
+    output: 213_159,
   },
 ];
 

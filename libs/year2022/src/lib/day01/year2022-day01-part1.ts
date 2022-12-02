@@ -1,4 +1,5 @@
-export function year2022Day01Part1(input: string): string {
+// O(n) (n === input.length)
+export function year2022Day01Part1(input: string): number {
   const foodCaloriesFromElves = input
     .split("\n\n")
     .map((foodCaloriesFromOneElf) =>
@@ -16,5 +17,5 @@ export function year2022Day01Part1(input: string): string {
     }
   }
 
-  return mostFoodCalories.toString();
+  return mostFoodCalories;
 }

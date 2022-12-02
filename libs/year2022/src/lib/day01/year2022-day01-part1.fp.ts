@@ -1,4 +1,4 @@
-export function year2022Day01Part1Fp(input: string): string {
+export function year2022Day01Part1Fp(input: string): number {
   const foodCaloriesFromElves = input
     .split("\n\n")
     .map((foodCaloriesFromOneElf) =>
@@ -10,5 +10,5 @@ export function year2022Day01Part1Fp(input: string): string {
       foodCaloriesFromElf.reduce((sum, foodCalories) => sum + foodCalories, 0)
   );
 
-  return Math.max(...summedFoodCaloriesFromElves).toString();
+  return Math.max(...summedFoodCaloriesFromElves);
 }
