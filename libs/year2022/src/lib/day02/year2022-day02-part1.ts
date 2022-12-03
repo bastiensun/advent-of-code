@@ -1,4 +1,4 @@
-// O(n) (n === input.length)
+// O(n)
 import { getRoundOutcome, getYourShapeScore } from "./year2022-day02-utils";
 
 export function year2022Day02Part1(input: string): number {

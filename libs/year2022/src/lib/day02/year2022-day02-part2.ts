@@ -4,6 +4,7 @@ import {
   getYourShapeScore,
 } from "./year2022-day02-utils";
 
+// O(n)
 export function year2022Day02Part2(input: string): number {
   const rounds = input.split("\n").filter(Boolean);
 

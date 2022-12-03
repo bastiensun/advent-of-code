@@ -1,4 +1,4 @@
-// O(n) (n === input.length)
+// O(n)
 export function year2022Day01Part2(input: string): number {
   const foodCaloriesFromElves = input
     .split("\n\n")

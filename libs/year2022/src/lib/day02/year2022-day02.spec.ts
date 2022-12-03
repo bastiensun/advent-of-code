@@ -23,7 +23,7 @@ const part1Cases = [
 ];
 
 describe.each(part1Cases)(
-  "[%#] Year 2022 - Day 01 - Part 1",
+  "[%#] Year 2022 - Day 02 - Part 1",
   ({ input, output }) => {
     it("Procedural", () => {
       expect(year2022Day02Part1(input)).toEqual(output);
@@ -47,13 +47,13 @@ const part2Cases = [
 ];
 
 describe.each(part2Cases)(
-  "[%#] Year 2022 - Day 01 - Part 2",
+  "[%#] Year 2022 - Day 02 - Part 2",
   ({ input, output }) => {
     it("Procedural", () => {
       expect(year2022Day02Part2(input)).toEqual(output);
     });
 
-    it.skip("Functional", () => {
+    it("Functional", () => {
       expect(year2022Day02Part2Fp(input)).toEqual(output);
     });
   }
