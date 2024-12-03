@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "@tsconfig/node20/tsconfig.json",
+    "@tsconfig/strictest/tsconfig.json"
+  ],
+  "compilerOptions": {
+    // override `@tsconfig/node20/tsconfig.json`'s module
+    "module": "preserve",
+    // override `@tsconfig/node20/tsconfig.json`'s module resolution
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "types": ["vitest/importMeta"]
+  },
+  "include": ["src/**/*"]
+}
