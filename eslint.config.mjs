@@ -105,6 +105,13 @@ export default [
       "prefer-promise-reject-errors": "error", // cf. https://maximorlov.com/linting-rules-for-asynchronous-code-in-javascript/#7-prefer-promise-reject-errors
       "require-atomic-updates": "error", // cf. https://maximorlov.com/linting-rules-for-asynchronous-code-in-javascript/#4-require-atomic-updates
       "vitest/prefer-strict-equal": "error",
+
+      // Custom
+      /* eslint-disable perfectionist/sort-objects */
+      "@typescript-eslint/ban-ts-comment": "off",
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-object-injection": "off",
+      /* eslint-enable perfectionist/sort-objects */
     },
   },
   {
