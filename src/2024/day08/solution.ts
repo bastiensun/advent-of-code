@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises"
 import path from "node:path"
 
-import { Grid } from "../../utils/map"
+import { Coordinate, Grid } from "../../utils/grid"
 
 function part1(input: string): number {
   const antennaMap = new AntennaMap(input)
@@ -28,7 +28,7 @@ class AntennaMap extends Grid {
         }
 
         if (hasResonantHarmonics) {
-          uniqueLocations.add(new Location(rowIndex, columnIndex).getKey())
+          uniqueLocations.add(new Coordinate(rowIndex, columnIndex).getKey())
         }
 
         const currentSeenAntennaLocations =
@@ -47,36 +47,36 @@ class AntennaMap extends Grid {
           const deltaRow = rowIndex - seenAntennaRowIndex
           const deltaColumn = columnIndex - seenAntennaColumnIndex
 
-          let antinode1 = new Location(
+          let antinode1 = new Coordinate(
             seenAntennaRowIndex - deltaRow,
             seenAntennaColumnIndex - deltaColumn,
           )
-          let antinode2 = new Location(
+          let antinode2 = new Coordinate(
             rowIndex + deltaRow,
             columnIndex + deltaColumn,
           )
 
-          while (this.isWithin(antinode1)) {
+          while (antinode1.isWithin(this)) {
             uniqueLocations.add(antinode1.getKey())
 
             if (!hasResonantHarmonics) {
               break
             }
 
-            antinode1 = new Location(
+            antinode1 = new Coordinate(
               antinode1.rowIndex - deltaRow,
               antinode1.columnIndex - deltaColumn,
             )
           }
 
-          while (this.isWithin(antinode2)) {
+          while (antinode2.isWithin(this)) {
             uniqueLocations.add(antinode2.getKey())
 
             if (!hasResonantHarmonics) {
               break
             }
 
-            antinode2 = new Location(
+            antinode2 = new Coordinate(
               antinode2.rowIndex + deltaRow,
               antinode2.columnIndex + deltaColumn,
             )
@@ -88,32 +88,6 @@ class AntennaMap extends Grid {
     }
 
     return uniqueLocations.size
-  }
-
-  isWithin(location: Location): boolean {
-    const rowsLength = this.grid.length
-    const columnsLength = this.grid.at(0)?.length ?? 0
-
-    return (
-      0 <= location.rowIndex &&
-      location.rowIndex < rowsLength &&
-      0 <= location.columnIndex &&
-      location.columnIndex < columnsLength
-    )
-  }
-}
-
-class Location {
-  columnIndex: number
-  rowIndex: number
-
-  constructor(rowIndex: number, columnIndex: number) {
-    this.rowIndex = rowIndex
-    this.columnIndex = columnIndex
-  }
-
-  getKey(): string {
-    return `${this.rowIndex.toString()},${this.columnIndex.toString()}`
   }
 }
 

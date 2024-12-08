@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises"
 import path from "node:path"
 
-import { Grid } from "../../utils/map"
+import { Grid } from "../../utils/grid"
 
 // O(rows * columns)
 function part1(wordSearch: string): number {
@@ -16,17 +16,6 @@ function part2(wordSearch: string): number {
 }
 
 class XmasGrid extends Grid {
-  private EIGHT_DIRECTIONS: [number, number][] = [
-    [0, 1], // horizontal
-    [0, -1], // horizontal backward
-    [-1, 0], // vertical
-    [1, 0], // vertical backward
-    [1, 1], // diagonal
-    [-1, 1], // diagonal
-    [-1, -1], // diagonal
-    [1, -1], // diagonal
-  ]
-
   computeNumberOfXmasPart1(): number {
     let numberOfXmas = 0
 
@@ -36,7 +25,7 @@ class XmasGrid extends Grid {
           continue
         }
 
-        for (const [x, y] of this.EIGHT_DIRECTIONS) {
+        for (const [x, y] of Grid.EIGHT_DIRECTIONS) {
           if (
             this.grid[rowIndex + x]?.[columnIndex + y] === "M" &&
             this.grid[rowIndex + 2 * x]?.[columnIndex + 2 * y] === "A" &&

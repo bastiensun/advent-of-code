@@ -2,7 +2,7 @@ import assert from "node:assert"
 import * as fs from "node:fs/promises"
 import path from "node:path"
 
-import { Grid } from "../../utils/map"
+import { Grid } from "../../utils/grid"
 
 // O(rows * columns)
 function part1(input: string): number {
@@ -81,9 +81,6 @@ class MappedArea extends Grid {
 
     const distinctDirectedPositions = new Set<string>()
 
-    const rowsLength = this.grid.length
-    const columnsLength = this.grid.at(0)?.length ?? 0
-
     let currentDirectionIndex = 0
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
@@ -106,9 +103,9 @@ class MappedArea extends Grid {
 
       const isLeavingMap = !(
         0 <= nextRowIndex &&
-        nextRowIndex < rowsLength &&
+        nextRowIndex < this.rowsLength &&
         0 <= nextColumnIndex &&
-        nextColumnIndex < columnsLength
+        nextColumnIndex < this.columnsLength
       )
       if (isLeavingMap) {
         return false
@@ -140,9 +137,6 @@ class MappedArea extends Grid {
 
     const distinctVisitedPositions = new Set<string>()
 
-    const rowsLength = this.grid.length
-    const columnsLength = this.grid.at(0)?.length ?? 0
-
     let currentDirectionIndex = 0
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while (true) {
@@ -159,9 +153,9 @@ class MappedArea extends Grid {
 
       const isLeavingMap = !(
         0 <= nextRowIndex &&
-        nextRowIndex < rowsLength &&
+        nextRowIndex < this.rowsLength &&
         0 <= nextColumnIndex &&
-        nextColumnIndex < columnsLength
+        nextColumnIndex < this.columnsLength
       )
       if (isLeavingMap) {
         break
