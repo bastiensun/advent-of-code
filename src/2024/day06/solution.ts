@@ -2,6 +2,8 @@ import assert from "node:assert"
 import * as fs from "node:fs/promises"
 import path from "node:path"
 
+import { Grid } from "../../utils/map"
+
 // O(rows * columns)
 function part1(input: string): number {
   const mappedArea = new MappedArea(input)
@@ -46,7 +48,7 @@ function part2(input: string): number {
 
 type Position = [number, number]
 
-class MappedArea {
+class MappedArea extends Grid {
   private static ORDERED_DIRECTIONS = [
     [-1, 0], // up
     [0, 1], // right
@@ -54,38 +56,14 @@ class MappedArea {
     [0, -1], // left
   ] as const
 
-  private readonly map
-
-  constructor(input: string) {
-    this.map = this.parse(input)
-  }
-
-  // O(rows * columns)
-  private parse(input: string): string[][] {
-    const rows = input.split("\n")
-
-    const map = Array.from({ length: rows.length }, () =>
-      Array.from<string>({ length: rows.at(0)?.length ?? 0 }),
-    )
-    for (const [rowIndex, row] of rows.entries()) {
-      const columns = [...row]
-      for (const [columnIndex, character] of columns.entries()) {
-        // @ts-expect-error
-        map[rowIndex][columnIndex] = character
-      }
-    }
-
-    return map
-  }
-
   addObstruction([rowIndex, columnIndex]: Position): void {
     // @ts-ignore
-    this.map[rowIndex][columnIndex] = "#"
+    this.grid[rowIndex][columnIndex] = "#"
   }
 
   // O(rows * columns)
   findGuardPosition(): Position {
-    for (const [rowIndex, row] of this.map.entries()) {
+    for (const [rowIndex, row] of this.grid.entries()) {
       for (const [columnIndex, character] of row.entries()) {
         const isGuard = character === "^"
         if (isGuard) {
@@ -103,8 +81,8 @@ class MappedArea {
 
     const distinctDirectedPositions = new Set<string>()
 
-    const rowsLength = this.map.length
-    const columnsLength = this.map.at(0)?.length ?? 0
+    const rowsLength = this.grid.length
+    const columnsLength = this.grid.at(0)?.length ?? 0
 
     let currentDirectionIndex = 0
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -148,12 +126,12 @@ class MappedArea {
   }
 
   isObstacle([rowIndex, columnIndex]: Position): boolean {
-    return this.map[rowIndex]?.[columnIndex] === "#"
+    return this.grid[rowIndex]?.[columnIndex] === "#"
   }
 
   removeObstruction([rowIndex, columnIndex]: Position): void {
     // @ts-ignore
-    this.map[rowIndex][columnIndex] = "."
+    this.grid[rowIndex][columnIndex] = "."
   }
 
   // O(rows * columns)
@@ -162,8 +140,8 @@ class MappedArea {
 
     const distinctVisitedPositions = new Set<string>()
 
-    const rowsLength = this.map.length
-    const columnsLength = this.map.at(0)?.length ?? 0
+    const rowsLength = this.grid.length
+    const columnsLength = this.grid.at(0)?.length ?? 0
 
     let currentDirectionIndex = 0
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
