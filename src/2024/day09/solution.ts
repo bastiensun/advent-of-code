@@ -1,95 +1,128 @@
+import assert from "node:assert"
 import * as fs from "node:fs/promises"
 import path from "node:path"
 
-import { Coordinate, Grid } from "../../utils/grid"
-
 function part1(input: string): number {
-  const antennaMap = new AntennaMap(input)
-  return antennaMap.calculateNumberOfUniqueAntinode()
-}
+  const output: string[] = []
 
-function part2(input: string): number {
-  const antennaMap = new AntennaMap(input)
-  return antennaMap.calculateNumberOfUniqueAntinode(true)
-}
-
-class AntennaMap extends Grid {
-  calculateNumberOfUniqueAntinode(hasResonantHarmonics = false): number {
-    const uniqueLocations = new Set<string>()
-    const specificFrequencyAntennaToSeenAntennaLocations = new Map<
-      string,
-      [number, number][]
-    >()
-
-    for (const [rowIndex, row] of this.grid.entries()) {
-      for (const [columnIndex, character] of row.entries()) {
-        if (character === ".") {
-          continue
-        }
-
-        if (hasResonantHarmonics) {
-          uniqueLocations.add(new Coordinate(rowIndex, columnIndex).getKey())
-        }
-
-        const currentSeenAntennaLocations =
-          specificFrequencyAntennaToSeenAntennaLocations.get(character)
-        if (currentSeenAntennaLocations === undefined) {
-          specificFrequencyAntennaToSeenAntennaLocations.set(character, [
-            [rowIndex, columnIndex],
-          ])
-          continue
-        }
-
-        for (const [
-          seenAntennaRowIndex,
-          seenAntennaColumnIndex,
-        ] of currentSeenAntennaLocations) {
-          const deltaRow = rowIndex - seenAntennaRowIndex
-          const deltaColumn = columnIndex - seenAntennaColumnIndex
-
-          let antinode1 = new Coordinate(
-            seenAntennaRowIndex - deltaRow,
-            seenAntennaColumnIndex - deltaColumn,
-          )
-          let antinode2 = new Coordinate(
-            rowIndex + deltaRow,
-            columnIndex + deltaColumn,
-          )
-
-          while (antinode1.isWithin(this)) {
-            uniqueLocations.add(antinode1.getKey())
-
-            if (!hasResonantHarmonics) {
-              break
-            }
-
-            antinode1 = new Coordinate(
-              antinode1.rowIndex - deltaRow,
-              antinode1.columnIndex - deltaColumn,
-            )
-          }
-
-          while (antinode2.isWithin(this)) {
-            uniqueLocations.add(antinode2.getKey())
-
-            if (!hasResonantHarmonics) {
-              break
-            }
-
-            antinode2 = new Coordinate(
-              antinode2.rowIndex + deltaRow,
-              antinode2.columnIndex + deltaColumn,
-            )
-          }
-        }
-
-        currentSeenAntennaLocations.push([rowIndex, columnIndex])
+  let currentId = 0
+  let isFileBlock = true
+  for (const character of [...input]) {
+    const length = Number(character)
+    for (let _ = 0; _ < length; _ += 1) {
+      if (isFileBlock) {
+        output.push(currentId.toString())
+      } else {
+        output.push(".")
       }
     }
 
-    return uniqueLocations.size
+    if (isFileBlock) {
+      currentId += 1
+    }
+    isFileBlock = !isFileBlock
+  }
+
+  let leftIndex = 0
+  let rightIndex = output.length - 1
+  while (
+    leftIndex < output.length &&
+    rightIndex < output.length &&
+    leftIndex < rightIndex
+  ) {
+    const leftValue = output.at(leftIndex)
+    assert(leftValue !== undefined)
+
+    if (leftValue !== ".") {
+      leftIndex += 1
+      continue
+    }
+
+    const rightValue = output.at(rightIndex)
+    assert(rightValue !== undefined)
+
+    output[leftIndex] = rightValue
+    output[rightIndex] = "."
+    rightIndex -= 1
+  }
+
+  let answer = 0
+  for (const [characterIndex, character] of output.entries()) {
+    if (character === ".") {
+      continue
+    }
+
+    answer += characterIndex * Number(character)
+  }
+
+  return answer
+}
+
+// 2333133121414131402
+// fsfsfsfsfsfsfsfsfsf
+// 0123456789111111111
+//           012345678
+// 0 1 2 3 4 5 6 7 8 9
+
+function isFileBlock(index: number): boolean {
+  return index % 2 === 0
+}
+
+function getFileId(index: number): number {
+  if (!isFileBlock(index)) {
+    throw new Error()
+  }
+
+  return index / 2
+}
+
+function part2(input: string): number {
+  const output: string[] = []
+  const diskMap = [...input]
+
+  let leftIndex = 0
+  let rightIndex = diskMap.length - 1
+  while (
+    leftIndex < diskMap.length &&
+    rightIndex < diskMap.length &&
+    leftIndex < rightIndex
+  ) {
+    const leftValue = Number(output.at(leftIndex))
+
+    if (isFileBlock(leftIndex)) {
+      const fileId = getFileId(leftIndex)
+      const fileLength = leftValue
+      for (let _ = 0; _ < fileLength; _ += 1) {
+        output.push(fileId.toString())
+      }
+    } else {
+      const spaceLength = leftValue
+      while (true) {}
+    }
+    leftIndex += 1
+    rightIndex -= 1
+  }
+
+  let currentId = 0
+  // let isFileBlock = true
+  for (const character of [...input]) {
+    const length = Number(character)
+    for (let _ = 0; _ < length; _ += 1) {
+      if (isFileBlock) {
+        output.push(currentId.toString())
+      } else {
+        output.push(".")
+      }
+    }
+
+    if (isFileBlock) {
+      currentId += 1
+    }
+    isFileBlock = !isFileBlock
   }
 }
+
+function parse(input: string) {}
 
 if (import.meta.vitest) {
   const { expect, test } = import.meta.vitest
@@ -101,8 +134,8 @@ if (import.meta.vitest) {
       "utf8",
     )
 
-    expect.soft(part1(input)).toStrictEqual(14)
-    expect.soft(part2(input)).toStrictEqual(34)
+    expect.soft(part1(input)).toStrictEqual(1928)
+    // expect.soft(part2(input)).toStrictEqual(34)
     /* eslint-enable @typescript-eslint/no-magic-numbers */
   })
 }
